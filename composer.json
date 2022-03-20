@@ -1,0 +1,19 @@
+{
+    "name": "jeff/essence",
+    "description": "carto prix d'essence pour la HG (Haute-Garonne)",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Services\\": "services/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guillaume RICHARD",
+            "email": "g.jf.richard@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}
