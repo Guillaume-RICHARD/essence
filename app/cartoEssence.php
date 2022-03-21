@@ -7,7 +7,7 @@ use Services\Fix as Fix;
 use Services\TwitterManager;
 
 // Affichage des erreurs qu'en local
-if ($_SERVER["HTTP_HOST"] === "local.essence" || $_SERVER["SERVER_NAME"] === "local.essence") {
+if ($_ENV["ENVIRONNEMENT"]) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
@@ -38,8 +38,6 @@ $today      = date('d/m/Y à H:i', time());
 $pdv_infos  = $xmlToReader->infos($liste_pdv);
 $count_pdv  = $pdv_infos["count"];
 
-// echo "<pre>"; var_dump($pdv_infos); echo "</pre>"; die;
-
 $Gazole = $SP95 = $SP98 = $E10 = $E85 = $GPLc = [];
 $minGazole = $minSP95 = $minSP98 = $minE10 = $minE85 = $minGPLc = 0;
 $essences = ["Gazole","SP95","SP98","E10","E85","GPLc"];
@@ -58,28 +56,8 @@ foreach ($essences as $essence) {
         $essence => $fix->min_price(${$essence})
     ];
     foreach ($pdv_infos["infos"] as &$pdv_info) {
-        if (isset($pdv_info["Gazole"]) && isset($prix["Gazole"]) && $pdv_info["Gazole"] == str_replace(",", '.',$prix["Gazole"])) {
-            $pdv_info["actif"] = $pdv_info["Gazole-actif"] = 1;
-        }
-
-        if (isset($pdv_info["SP95"]) && isset($prix["SP95"]) && $pdv_info["SP95"] == str_replace(",", '.',$prix["SP95"])) {
-            $pdv_info["actif"] = $pdv_info["SP95-actif"] = 1;
-        }
-
-        if (isset($pdv_info["SP98"]) && isset($prix["SP98"]) && $pdv_info["SP98"] == str_replace(",", '.',$prix["SP98"])) {
-            $pdv_info["actif"] = $pdv_info['SP98-actif'] = 1;
-        }
-
-        if (isset($pdv_info["E10"]) && isset($prix["E10"]) && $pdv_info["E10"] == str_replace(",", '.',$prix["E10"])) {
-            $pdv_info["actif"] = $pdv_info['E10-actif'] = 1;
-        }
-
-        if (isset($pdv_info["E85"]) && isset($prix["E85"]) && $pdv_info["E85"] == str_replace(",", '.',$prix["E85"])) {
-            $pdv_info["actif"] = $pdv_info['E85-actif'] = 1;
-        }
-
-        if (isset($pdv_info["GPLc"]) && isset($prix["GPLc"]) && $pdv_info["GPLc"] == str_replace(",", '.',$prix["GPLc"])) {
-            $pdv_info["actif"] = $pdv_info['GPLc-actif'] = 1;
+        if (isset($pdv_info[$essence]) && isset($prix[$essence]) && $pdv_info[$essence] == str_replace(",", '.',$prix[$essence])) {
+            $pdv_info["actif"] = $pdv_info[$essence."-actif"] = 1;
         }
     }
 }

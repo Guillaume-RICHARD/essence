@@ -3,7 +3,7 @@ function style(feature) {
     return {
         fillColor: '#0000FF',
         weight: 1,
-        opacity: 1,
+        opacity: 0.5,
         color: 'black',
         dashArray: '3',
         fillOpacity: 0.3
